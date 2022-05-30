@@ -2,14 +2,14 @@ use std::str::FromStr;
 
 #[derive(PartialEq, Debug)]
 pub struct Source {
-    column: char,
-    row: Option<u8>,
+    pub column: char,
+    pub row: Option<u8>,
 }
 
 #[derive(PartialEq, Debug)]
 pub struct Destiny {
-    column: char,
-    row: u8,
+    pub column: char,
+    pub row: u8,
 }
 
 #[derive(PartialEq, Debug)]
