@@ -23,19 +23,26 @@ pub struct Move {
 impl FromStr for Move {
     type Err = MoveParseErr;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.is_empty() {
+    fn from_str(input: &str) -> Result<Self, Self::Err> {
+        if input.is_empty() {
             return Err(MoveParseErr::EmptyString);
         }
 
-        if s.len() < 2 {
+        if input.len() < 2 {
             return Err(MoveParseErr::IncorrectStringLength);
         }
 
-        if !MOVE_REGEX.is_match(s) {
+        if !MOVE_REGEX.is_match(input) {
             return Err(MoveParseErr::IncorrectFormat);
         }
 
+        let groups_captured = MOVE_REGEX.captures(input).unwrap();
+        let piece = groups_captured.get(1).map(|x| x.as_str()).map(Piece::from_str);
+        let source = groups_captured.get(2).map(|x| x.as_str());
+        let capture = groups_captured.get(3).map(|x| x.as_str());
+        let destiny = groups_captured.get(4).map(|x| x.as_str());
+        let check = groups_captured.get(5).map(|x| x.as_str());
+        
         todo!()
     }
 }
