@@ -1,7 +1,7 @@
 use super::{
     actions::CheckType,
     piece::Piece,
-    positions::{Destiny, ParsePositionErr, Source},
+    positions::{Destiny, ParseSourceErr, Source},
 };
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -52,11 +52,11 @@ pub enum MoveParseErr {
     EmptyString,
     IncorrectStringLength,
     IncorrectFormat,
-    IncorrectPosition(ParsePositionErr),
+    IncorrectPosition(ParseSourceErr),
 }
 
-impl From<ParsePositionErr> for MoveParseErr {
-    fn from(e: ParsePositionErr) -> Self {
+impl From<ParseSourceErr> for MoveParseErr {
+    fn from(e: ParseSourceErr) -> Self {
         MoveParseErr::IncorrectPosition(e)
     }
 }

@@ -1,4 +1,4 @@
-use std::{str::FromStr, num::ParseIntError};
+use std::str::FromStr;
 
 #[derive(PartialEq, Debug)]
 pub struct Source {
@@ -13,37 +13,36 @@ pub struct Destiny {
 }
 
 #[derive(PartialEq, Debug)]
-pub enum ParsePositionErr {
+pub enum ParseSourceErr {
     EmptyString,
-    EmptyRow,
     UnknownRow,
     UnknownColumn,
     UnknownPosition
 }
 
 impl FromStr for Source {
-    type Err = ParsePositionErr;
+    type Err = ParseSourceErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if s.is_empty() {
-            return Err(ParsePositionErr::EmptyString)
+            return Err(ParseSourceErr::EmptyString)
         }
 
         if s.len() > 2 {
-            return Err(ParsePositionErr::UnknownPosition)
+            return Err(ParseSourceErr::UnknownPosition)
         }
 
         let (column, row) = s.split_at(1);
         let column = match column.chars().next() {
             Some(c @ 'a'..='h') => c,
-            _ => return Err(ParsePositionErr::UnknownColumn)
+            _ => return Err(ParseSourceErr::UnknownColumn)
         };
 
         let row = match row {
             _ if row.is_empty() => None,
             _ => match row.parse::<u8>() {
                 Ok(r @ 1..=8) => Some(r),
-                _ => return Err(ParsePositionErr::UnknownRow) 
+                _ => return Err(ParseSourceErr::UnknownRow) 
             }
         };
 
@@ -52,7 +51,7 @@ impl FromStr for Source {
 }
 
 impl FromStr for Destiny {
-    type Err = ParsePositionErr;
+    type Err = ParseSourceErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         todo!();
@@ -69,19 +68,33 @@ mod tests {
 
     #[test]
     fn parse_source_empty_string() {
-        assert_eq!(Err(ParsePositionErr::EmptyString), Source::from_str(""))
+        assert_eq!(Err(ParseSourceErr::EmptyString), Source::from_str(""))
+    }
+
+    #[test]
+    fn parse_source_unknown_position() {
+        assert_eq!(Err(ParseSourceErr::UnknownPosition), Source::from_str("ab321"))
     }
     
     #[test]
     fn parse_source_unknown_row() {
-        assert_eq!(Err(ParsePositionErr::UnknownRow), Source::from_str("ax"));
-        assert_eq!(Err(ParsePositionErr::UnknownRow), Source::from_str("a9"));
+        assert_eq!(Err(ParseSourceErr::UnknownRow), Source::from_str("ax"));
+        assert_eq!(Err(ParseSourceErr::UnknownRow), Source::from_str("a9"));
     }
 
     #[test]
     fn parse_source_unknown_column() {
-        assert_eq!(Err(ParsePositionErr::UnknownColumn), Source::from_str("98"));
+        assert_eq!(Err(ParseSourceErr::UnknownColumn), Source::from_str("98"));
+        assert_eq!(Err(ParseSourceErr::UnknownColumn), Source::from_str("k8")); 
     }
 
-    // TODO: add more tests 
+    #[test]
+    fn parse_source_only_column() {
+        assert_eq!(Source { row: None, column: 'a' }, Source::from_str("a").unwrap());
+    }
+    
+    #[test]
+    fn parse_source_with_row_and_column() {
+        assert_eq!(Source { row: Some(2), column: 'h' }, Source::from_str("h2").unwrap());
+    }
 }
