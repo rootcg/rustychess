@@ -1,7 +1,7 @@
 use super::{
     actions::CheckType,
     piece::Piece,
-    positions::{Destiny, PositionParseErr, Source},
+    positions::{Destiny, ParsePositionErr, Source},
 };
 use once_cell::sync::Lazy;
 use regex::Regex;
@@ -38,7 +38,7 @@ impl FromStr for Move {
 
         let groups_captured = MOVE_REGEX.captures(input).unwrap();
         let piece = groups_captured.get(1).map(|x| x.as_str()).map(Piece::from_str);
-        let source = groups_captured.get(2).map(|x| x.as_str());
+        let source = groups_captured.get(2).map(|x| x.as_str()).map(Source::from_str);
         let capture = groups_captured.get(3).map(|x| x.as_str());
         let destiny = groups_captured.get(4).map(|x| x.as_str());
         let check = groups_captured.get(5).map(|x| x.as_str());
@@ -52,11 +52,11 @@ pub enum MoveParseErr {
     EmptyString,
     IncorrectStringLength,
     IncorrectFormat,
-    IncorrectPosition(PositionParseErr),
+    IncorrectPosition(ParsePositionErr),
 }
 
-impl From<PositionParseErr> for MoveParseErr {
-    fn from(e: PositionParseErr) -> Self {
+impl From<ParsePositionErr> for MoveParseErr {
+    fn from(e: ParsePositionErr) -> Self {
         MoveParseErr::IncorrectPosition(e)
     }
 }
