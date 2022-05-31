@@ -1,4 +1,4 @@
-pub mod domain;
+pub mod chess;
 
 fn main() {
     println!("Hello, world!");

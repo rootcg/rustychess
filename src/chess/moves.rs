@@ -1,6 +1,6 @@
 use super::{
     actions::{self, CheckType, ParseCheckTypeErr},
-    piece::{ParsePieceErr, Piece},
+    pieces::{ParsePieceErr, Piece},
     positions::{Destiny, ParsePositionErr, Source},
 };
 use once_cell::sync::Lazy;
