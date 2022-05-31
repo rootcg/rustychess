@@ -7,7 +7,7 @@ pub enum Piece {
     Bishop,
     Knight,
     Rook,
-    Pawn,
+    Pawn
 }
 
 #[derive(PartialEq, Debug)]
