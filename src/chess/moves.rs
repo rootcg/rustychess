@@ -8,8 +8,7 @@ use regex::Regex;
 use std::str::FromStr;
 
 static MOVE_REGEX: Lazy<Regex> = Lazy::new(|| {
-    Regex::from_str("^([KQBNR]?)([abcdefgh][012345678]?)?(x?)([abcdefgh][012345678])([+#]?)$")
-        .unwrap()
+    Regex::from_str("^([KQBNR]?)([abcdefgh][012345678]?)?(x?)([abcdefgh][012345678])([+#]?)$").unwrap()
 });
 
 #[derive(PartialEq, Debug)]

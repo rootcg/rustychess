@@ -19,8 +19,8 @@ fn main() -> std::io::Result<()> {
     
         let chess_move = input.trim();
         match chess::moves::Move::from_str(chess_move) {
-            Ok(m) => println!("{} is a valid move! It is represented like: {}", &chess_move, "aa"),
-            Err(e) => println!("{} is not a valid move! The reason is: {}", &chess_move, "aa")
+            Ok(m) => println!("{} is a valid move! It is represented like: {:#?}", &chess_move, m),
+            Err(e) => println!("{} is not a valid move! The reason is: {:#?}", &chess_move, e)
         }
 
         try_again = read_try_again()?;
